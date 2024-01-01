@@ -1,5 +1,5 @@
 import { Alert, StyleSheet, TextInput, View } from "react-native";
-import PrimaryButton from "../components/PrimaryButton";
+import PrimaryButton from "../components/ui/PrimaryButton";
 import { useState } from "react";
 import Colors from "../lib/constants";
 
@@ -26,7 +26,6 @@ const StartGameScreen = ({ onPickNumber }: { onPickNumber: Function }) => {
       );
       return;
     }
-    console.log(`valid number: ${chosenNumber}`);
     onPickNumber(chosenNumber);
   }
 
