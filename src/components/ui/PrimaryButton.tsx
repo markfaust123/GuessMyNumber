@@ -6,7 +6,7 @@ const PrimaryButton = ({
   children,
 }: {
   onPress: any;
-  children: string;
+  children: React.ReactNode;
 }) => {
   return (
     <View style={styles.buttonOuterContainer}>
