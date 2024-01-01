@@ -1,9 +1,11 @@
-import { Text, View } from "react-native";
+import { Image, View } from "react-native";
+import Title from "../components/ui/Title";
 
 const GameOverScreen = () => {
     return (
         <View>
-            <Text>You Got It!</Text>
+            <Title>GAME OVER!</Title>
+            <Image source={require("../../assets/images/success.png")}/>
         </View>
     )
 }

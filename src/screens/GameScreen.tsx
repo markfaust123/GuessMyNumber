@@ -7,28 +7,31 @@ import Card from "../components/ui/Card";
 import InstructionText from "../components/ui/InstructionText";
 import { Ionicons } from "@expo/vector-icons";
 
+// Generate number between min inclusive and max exclusive.
+// Can specify one specific number to exclude.
+const generateRandomBetween = (min: number, max: number) => {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
 let minBoundary: number = 1;
 let maxBoundary: number = 100;
 
-const GameScreen = ({ userNumber, onGameOver }: { userNumber: number, onGameOver: Function }) => {
-  const initialGuess: number = generateRandomBetween(
-    1,
-    100,
-    userNumber
+const GameScreen = ({
+  userNumber,
+  onGameOver,
+}: {
+  userNumber: number;
+  onGameOver: Function;
+}) => {
+  const [currentGuess, setCurrentGuess] = useState<number>(() =>
+    generateRandomBetween(minBoundary, maxBoundary)
   );
 
-  const [currentGuess, setCurrentGuess] = useState<number>(initialGuess);
-
-  // Generate number between min inclusive and max exclusive.
-  // Can specify one specific number to exclude.
-  function generateRandomBetween(min: number, max: number, exclude: number) {
-    const rndNum: number = Math.floor(Math.random() * (max - min)) + min;
-    if (rndNum === exclude) {
-      return generateRandomBetween(min, max, exclude);
-    } else {
-      return rndNum;
+  useEffect(() => {
+    if (currentGuess === userNumber) {
+      onGameOver();
     }
-  }
+  }, [currentGuess, userNumber, onGameOver]);
 
   function handleNextGuess(direction: string) {
     // direction => "lower" or "higher"
@@ -43,24 +46,13 @@ const GameScreen = ({ userNumber, onGameOver }: { userNumber: number, onGameOver
       return;
     }
 
-    if (direction === "higher") {
-      minBoundary = currentGuess + 1;
-    } /* don't need "lower" because never called with diff string */ else {
+    if (direction === "lower") {
       maxBoundary = currentGuess;
+    } /* don't need "higher" because never called with diff string */ else {
+      minBoundary = currentGuess + 1;
     }
-    const newRndNumber: number = generateRandomBetween(
-      minBoundary,
-      maxBoundary,
-      userNumber
-    );
-    setCurrentGuess(newRndNumber);
+    setCurrentGuess(generateRandomBetween(minBoundary, maxBoundary));
   }
-
-  useEffect(() => {
-    if (currentGuess === userNumber) {
-      onGameOver();
-    }
-  }, [currentGuess])
 
   return (
     <View style={styles.screen}>
