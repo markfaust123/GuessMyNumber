@@ -13,20 +13,12 @@ SplashScreen.preventAutoHideAsync();
 export default function App() {
   const [userNumber, setUserNumber] = useState<number>();
   const [gameIsOver, setGameIsOver] = useState<boolean>(true);
+  const [guessRounds, setGuessRounds] = useState<number>();
 
   const [fontsLoaded, fontError] = useFonts({
     "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
     "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
   });
-
-  // useEffect(() => {
-  //   async function hideSplashScreen() {
-  //     await SplashScreen.hideAsync();
-  //   }
-  //   if (fontsLoaded || fontError) {
-  //     hideSplashScreen();
-  //   }
-  // }, [fontsLoaded, fontError]);
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded || fontError) {
@@ -43,8 +35,14 @@ export default function App() {
     setGameIsOver(false);
   }
 
-  function handleGameOver() {
+  function handleGameOver(roundsNumber: number) {
     setGameIsOver(true);
+    setGuessRounds(roundsNumber);
+  }
+
+  function handleStartNewGame() {
+    setUserNumber(undefined);
+    setGuessRounds(0);
   }
 
   let screen = <StartGameScreen onPickNumber={handlePickedNumber} />;
@@ -54,7 +52,7 @@ export default function App() {
   }
 
   if (gameIsOver && userNumber) {
-    screen = <GameOverScreen />
+    screen = <GameOverScreen roundsNumber={guessRounds!} userNumber={userNumber} onStartNewGame={handleStartNewGame}/>
   }
 
   return (
