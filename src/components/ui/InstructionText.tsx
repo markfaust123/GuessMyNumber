@@ -8,17 +8,12 @@ const InstructionText = ({
   children: React.ReactNode;
   style?: object;
 }) => {
-  return (
-    <Text
-      style={[styles.instructionText, style]}
-    >
-      {children}
-    </Text>
-  );
+  return <Text style={[styles.instructionText, style]}>{children}</Text>;
 };
 
 const styles = StyleSheet.create({
   instructionText: {
+    fontFamily: "open-sans",
     color: Colors.accent500,
     fontSize: 24,
   },
